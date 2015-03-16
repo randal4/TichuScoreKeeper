@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tichu_array">
+        <item>(Choose Tichu)</item>
+        <item>Tichu Success</item>
+        <item>Tichu Fail</item>
+        <item>Grand Tichu Success</item>
+        <item>Grand Tichu Fail</item>
+        <item>Imperial Tichu Success</item>
+        <item>Imperial Tichu Fail</item>
+    </string-array>
+</resources>

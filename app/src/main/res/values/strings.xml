@@ -1,8 +1,10 @@
 <resources>
-    <string name="app_name">TichuScoreKeeper</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">Tichu Score Keeper</string>
     <string name="action_settings">Settings</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="team_1_points_header">Team 1 Points:</string>
+    <string name="team_2_points_header">Team 2 Points:</string>
+    <string name="one_two_bonus_label">One-Two bonus</string>
+    <string name="finished_button_label">Finish Round</string>
+    <string name="reset_button_label">Reset</string>
 </resources>

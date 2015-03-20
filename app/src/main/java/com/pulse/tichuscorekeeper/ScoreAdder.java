@@ -26,6 +26,10 @@ import android.widget.TextView;
  */
 public class ScoreAdder extends Fragment {
 
+    static final String STATE_TEAM_1_SCORE = "team1Score";
+    static final String STATE_TEAM_2_SCORE = "team2Score";
+    static final String HAND_NUMBER = "handNumber";
+
     private static final int TICHU_POINTS = 100;
     private static final int GRAND_TICHU_POINTS = 200;
     private static final int IMPERIAL_TICHU_POINTS = 400;
@@ -34,7 +38,7 @@ public class ScoreAdder extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private TextView roundTitle;
+    private TextView handTitle;
 
     private TextView totalScoreTeam1;
     private CheckBox oneTwoBonusTeam1;
@@ -46,7 +50,7 @@ public class ScoreAdder extends Fragment {
     private Spinner pointsSpinnerTeam2;
     private Spinner tichuSpinnerTeam2;
 
-    private Button endRoundButton;
+    private Button endHandButton;
     private Button resetButton;
 
     /**
@@ -75,8 +79,8 @@ public class ScoreAdder extends Fragment {
 
         View adder = inflater.inflate(R.layout.fragment_score_adder, container, false);
 
-        roundTitle = (TextView) adder.findViewById(R.id.round_title);
-        roundTitle.setText("1");
+        handTitle = (TextView) adder.findViewById(R.id.hand_title);
+        handTitle.setText("1");
 
         totalScoreTeam1 = (TextView) adder.findViewById(R.id.total_score_team_1);
         totalScoreTeam1.setText("0");
@@ -157,6 +161,9 @@ public class ScoreAdder extends Fragment {
             }
         });
 
+        //Start with spinner at 50 each
+        pointsSpinnerTeam1.setSelection(15);
+
         tichuSpinnerTeam1 = (Spinner) adder.findViewById(R.id.tichu_spinner_team_1);
         tichuSpinnerTeam2 = (Spinner) adder.findViewById(R.id.tichu_spinner_team_2);
         ArrayAdapter<CharSequence> tichuAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.tichu_array, android.R.layout.simple_spinner_item);
@@ -164,11 +171,11 @@ public class ScoreAdder extends Fragment {
         tichuSpinnerTeam1.setAdapter(tichuAdapter);
         tichuSpinnerTeam2.setAdapter(tichuAdapter);
 
-        endRoundButton = (Button) adder.findViewById(R.id.end_round_button);
-        endRoundButton.setOnClickListener(new View.OnClickListener() {
+        endHandButton = (Button) adder.findViewById(R.id.end_hand_button);
+        endHandButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onRoundEndButtonPressed();
+                onHandEndButtonPressed();
             }
         });
 
@@ -184,26 +191,25 @@ public class ScoreAdder extends Fragment {
         return adder;
     }
 
-    public void onRoundEndButtonPressed(){
-        String roundTitleText = roundTitle.getText().toString();
-        Integer roundNumber = Integer.parseInt(roundTitleText);
-        roundNumber = roundNumber + 1;
-        roundTitle.setText(roundNumber.toString());
+    public void onHandEndButtonPressed(){
+        String handTitleText = handTitle.getText().toString();
+        Integer handNumber = Integer.parseInt(handTitleText);
+        handNumber++;
+        handTitle.setText(handNumber.toString());
 
         Integer team1Score = Integer.parseInt(totalScoreTeam1.getText().toString());
         Integer team2Score = Integer.parseInt(totalScoreTeam2.getText().toString());
 
         if(oneTwoBonusTeam1.isChecked()) {
-            team1Score += 200;
+            team1Score += ONE_TWO_POINTS;
         }else if(oneTwoBonusTeam2.isChecked()) {
             //no points for you
         }else {
-
             team1Score += Integer.parseInt((String) pointsSpinnerTeam1.getSelectedItem());
         }
 
         if(oneTwoBonusTeam2.isChecked()) {
-            team2Score += 200;
+            team2Score += ONE_TWO_POINTS;
         }else if(oneTwoBonusTeam1.isChecked()) {
             //no points for you
         }else {
@@ -243,15 +249,15 @@ public class ScoreAdder extends Fragment {
     }
 
     public void onResetButtonPressed(){
-        roundTitle.setText("1");
+        handTitle.setText("1");
         totalScoreTeam1.setText("0");
         totalScoreTeam2.setText("0");
 
         oneTwoBonusTeam1.setChecked(false);
         oneTwoBonusTeam2.setChecked(false);
 
-        pointsSpinnerTeam1.setSelection(0);
-        //pointsSpinnerTeam2.setSelection(0);
+        // Make the default 50-50
+        pointsSpinnerTeam1.setSelection(15);
 
         tichuSpinnerTeam1.setSelection(0);
         tichuSpinnerTeam2.setSelection(0);
@@ -263,6 +269,26 @@ public class ScoreAdder extends Fragment {
 
         tichuSpinnerTeam1.setSelection(0);
         tichuSpinnerTeam2.setSelection(0);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString(STATE_TEAM_1_SCORE, totalScoreTeam1.getText().toString());
+        savedInstanceState.putString(STATE_TEAM_2_SCORE, totalScoreTeam2.getText().toString());
+        savedInstanceState.putString(HAND_NUMBER, handTitle.getText().toString());
+
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if(savedInstanceState != null) {
+            totalScoreTeam1.setText(savedInstanceState.getString(STATE_TEAM_1_SCORE));
+            totalScoreTeam2.setText(savedInstanceState.getString(STATE_TEAM_2_SCORE));
+            handTitle.setText(savedInstanceState.getString(HAND_NUMBER));
+        }
     }
 
     @Override

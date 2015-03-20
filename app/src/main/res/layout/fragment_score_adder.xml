@@ -8,7 +8,7 @@
     android:background="#ff2f323a">
 
     <RelativeLayout
-        android:id="@+id/round_header"
+        android:id="@+id/hand_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -17,19 +17,19 @@
         >
 
         <TextView
-            android:id="@+id/round_label"
+            android:id="@+id/hand_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/medium_text"
             android:textColor="@android:color/darker_gray"
-            android:text="Round "
+            android:text="Hand "
             />
 
         <TextView
-            android:id="@+id/round_title"
+            android:id="@+id/hand_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/round_label"
+            android:layout_toRightOf="@+id/hand_label"
             android:textColor="@android:color/darker_gray"
             android:textSize="@dimen/medium_text"
             />
@@ -39,7 +39,7 @@
     
     <RelativeLayout
         android:id="@+id/team_scores"
-        android:layout_below="@id/round_header"
+        android:layout_below="@id/hand_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
@@ -189,7 +189,7 @@
             />
 
         <Button
-            android:id="@+id/end_round_button"
+            android:id="@+id/end_hand_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/shim"

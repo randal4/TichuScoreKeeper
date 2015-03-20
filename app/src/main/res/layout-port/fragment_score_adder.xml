@@ -8,7 +8,7 @@
     android:background="#ff2f323a">
 
     <RelativeLayout
-        android:id="@+id/round_header"
+        android:id="@+id/hand_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -17,19 +17,19 @@
         >
 
         <TextView
-            android:id="@+id/round_label"
+            android:id="@+id/hand_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/medium_text"
             android:textColor="@android:color/darker_gray"
-            android:text="Round "
+            android:text="@string/hand_label"
             />
 
         <TextView
-            android:id="@+id/round_title"
+            android:id="@+id/hand_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/round_label"
+            android:layout_toRightOf="@+id/hand_label"
             android:textColor="@android:color/darker_gray"
             android:textSize="@dimen/medium_text"
             />
@@ -38,7 +38,7 @@
 
     <LinearLayout
         android:id="@+id/team_scores"
-        android:layout_below="@id/round_header"
+        android:layout_below="@id/hand_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -54,23 +54,24 @@
             >
 
             <TextView
-                android:id="@+id/team_1_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/medium_text"
-                android:text="Team 1"
-                />
-
-            <TextView
                 android:id="@+id/total_score_team_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/team_1_label"
                 android:gravity="end"
                 android:layout_margin="@dimen/default_margin"
                 android:padding="@dimen/default_padding"
                 android:textSize="@dimen/medium_text"
                 android:background="@android:color/darker_gray"
+                />
+
+            <TextView
+                android:id="@+id/team_1_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_margin"
+                android:padding="@dimen/default_padding"
+                android:textSize="@dimen/medium_text"
+                android:text="@string/team_1_points_header"
                 />
 
             <CheckBox
@@ -113,18 +114,9 @@
             >
 
             <TextView
-                android:id="@+id/team_2_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/medium_text"
-                android:text="Team 2"
-                />
-
-            <TextView
                 android:id="@+id/total_score_team_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/team_2_label"
                 android:gravity="end"
                 android:layout_margin="@dimen/default_margin"
                 android:padding="@dimen/default_padding"
@@ -132,6 +124,15 @@
                 android:background="@android:color/darker_gray"
                 />
 
+            <TextView
+                android:id="@+id/team_2_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_margin"
+                android:padding="@dimen/default_padding"
+                android:textSize="@dimen/medium_text"
+                android:text="@string/team_2_points_header"
+                />
 
             <CheckBox
                 android:id="@+id/one_two_team_2"
@@ -182,7 +183,7 @@
             />
 
         <Button
-            android:id="@+id/end_round_button"
+            android:id="@+id/end_hand_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/shim"

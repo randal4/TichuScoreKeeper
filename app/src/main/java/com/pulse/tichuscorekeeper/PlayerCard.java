@@ -14,6 +14,10 @@ import android.widget.TextView;
  * Created by puLse on 3/21/15.
  */
 public class PlayerCard extends RelativeLayout {
+    private static final int TICHU_POINTS = 100;
+    private static final int GRAND_TICHU_POINTS = 200;
+    private static final int IMPERIAL_TICHU_POINTS = 400;
+
     private TextView playerName;
     private Button playerSelectButton;
     private Spinner tichuSpinner;
@@ -56,5 +60,31 @@ public class PlayerCard extends RelativeLayout {
 
     public void setPlayerName(String name){
         playerName.setText(name);
+    }
+
+    public Integer getTichuPoints() {
+        Integer points = null;
+        String tichu = (String) tichuSpinner.getSelectedItem();
+        Integer seekbarPosition = tichuSeekbar.getProgress();
+
+        if(tichu.equals("(Choose Tichu)")) return 0;
+
+        if(tichu.equals("Tichu")) {
+            points = TICHU_POINTS;
+        } else if(tichu.equals("Grand Tichu")){
+            points = GRAND_TICHU_POINTS;
+        } else if(tichu.equals("Imperial Tichu")){
+            points = IMPERIAL_TICHU_POINTS;
+        }
+
+        if(seekbarPosition == 0){
+            points = points * -1;
+        }else if(seekbarPosition == 1){
+            points = 0;
+        }else if(seekbarPosition == 2){
+            points = points;
+        }
+
+        return points;
     }
 }

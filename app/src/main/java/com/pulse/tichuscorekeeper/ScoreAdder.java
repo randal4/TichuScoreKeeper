@@ -30,10 +30,6 @@ public class ScoreAdder extends Fragment {
     static final String STATE_TEAM_2_SCORE = "team2Score";
     static final String HAND_NUMBER = "handNumber";
 
-    private static final int TICHU_POINTS = 100;
-    private static final int GRAND_TICHU_POINTS = 200;
-    private static final int IMPERIAL_TICHU_POINTS = 400;
-
     private static final int ONE_TWO_POINTS = 200;
 
     private OnFragmentInteractionListener mListener;
@@ -42,8 +38,6 @@ public class ScoreAdder extends Fragment {
     private PlayerCard player2Card;
     private PlayerCard player3Card;
     private PlayerCard player4Card;
-
-    private TextView handTitle;
 
     private TextView totalScoreTeam1;
     private CheckBox oneTwoBonusTeam1;
@@ -55,6 +49,7 @@ public class ScoreAdder extends Fragment {
 
     private Button endHandButton;
     private Button resetButton;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -81,9 +76,6 @@ public class ScoreAdder extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View adder = inflater.inflate(R.layout.fragment_score_adder, container, false);
-
-        handTitle = (TextView) adder.findViewById(R.id.hand_title);
-        handTitle.setText("1");
 
         player1Card = (PlayerCard) adder.findViewById(R.id.player1_card);
         player2Card = (PlayerCard) adder.findViewById(R.id.player2_card);
@@ -193,16 +185,10 @@ public class ScoreAdder extends Fragment {
             }
         });
 
-
         return adder;
     }
 
     public void onHandEndButtonPressed(){
-        String handTitleText = handTitle.getText().toString();
-        Integer handNumber = Integer.parseInt(handTitleText);
-        handNumber++;
-        handTitle.setText(handNumber.toString());
-
         Integer team1Score = Integer.parseInt(totalScoreTeam1.getText().toString());
         Integer team2Score = Integer.parseInt(totalScoreTeam2.getText().toString());
 
@@ -222,8 +208,10 @@ public class ScoreAdder extends Fragment {
             team2Score += Integer.parseInt((String) pointsSpinnerTeam2.getSelectedItem());
         }
 
-        //team1Score += getTichuPoints(tichuSpinnerTeam1);
-        //team2Score += getTichuPoints(tichuSpinnerTeam2);
+        team1Score += player1Card.getTichuPoints();
+        team1Score += player2Card.getTichuPoints();
+        team2Score += player3Card.getTichuPoints();
+        team2Score += player4Card.getTichuPoints();
 
         totalScoreTeam1.setText(team1Score.toString());
         totalScoreTeam2.setText(team2Score.toString());
@@ -231,31 +219,10 @@ public class ScoreAdder extends Fragment {
         clearSelections();
     }
 
-    private Integer getTichuPoints(Spinner tichuSpinner) {
-        Integer points = null;
-        String tichu = (String) tichuSpinner.getSelectedItem();
 
-        if(tichu.equals("(Choose Tichu)")) return 0;
-
-        if(tichu.equals("Tichu Success")) {
-           points = TICHU_POINTS;
-        } else if(tichu.equals("Tichu Fail")){
-            points = TICHU_POINTS * -1;
-        } else if(tichu.equals("Grand Tichu Success")){
-            points = GRAND_TICHU_POINTS;
-        } else if(tichu.equals("Grand Tichu Fail")){
-            points = GRAND_TICHU_POINTS * -1;
-        } else if(tichu.equals("Imperial Tichu Success")){
-            points = IMPERIAL_TICHU_POINTS;
-        } else if(tichu.equals("Imperial Tichu Fail")) {
-            points = IMPERIAL_TICHU_POINTS * -1;
-        }
-
-        return points;
-    }
 
     public void onResetButtonPressed(){
-        handTitle.setText("1");
+        getActivity().setTitle(getActivity().getTitle());
         totalScoreTeam1.setText("0");
         totalScoreTeam2.setText("0");
 
@@ -278,7 +245,6 @@ public class ScoreAdder extends Fragment {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putString(STATE_TEAM_1_SCORE, totalScoreTeam1.getText().toString());
         savedInstanceState.putString(STATE_TEAM_2_SCORE, totalScoreTeam2.getText().toString());
-        savedInstanceState.putString(HAND_NUMBER, handTitle.getText().toString());
 
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -290,7 +256,6 @@ public class ScoreAdder extends Fragment {
         if(savedInstanceState != null) {
             totalScoreTeam1.setText(savedInstanceState.getString(STATE_TEAM_1_SCORE));
             totalScoreTeam2.setText(savedInstanceState.getString(STATE_TEAM_2_SCORE));
-            handTitle.setText(savedInstanceState.getString(HAND_NUMBER));
         }
     }
 

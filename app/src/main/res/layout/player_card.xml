@@ -17,7 +17,7 @@
             android:id="@+id/player_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_weight="4"
             android:textColor="@android:color/white"
             android:text="PLAYER TEXT"
             />
@@ -33,91 +33,28 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/body"
+    <RelativeLayout
+        android:id="@+id/tichu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/header"
-        android:layout_margin="@dimen/default_margin"
-        android:orientation="vertical"
-        android:layout_centerHorizontal="true"
         >
 
-        <RelativeLayout
-            android:id="@+id/tichu"
-            android:layout_width="match_parent"
+        <Spinner
+            android:id="@+id/tichus_spinner"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            >
+            />
 
-            <TextView
-                android:id="@+id/tichu_label"
-                android:layout_width="@dimen/tichus_label_width"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:text="@string/tichu_label"
-                />
-
-            <SeekBar
-                android:id="@+id/tichu_seekbar"
-                android:layout_width="@dimen/tichus_seeker_width"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/tichu_label"
-                android:progressDrawable="@drawable/progressbar"
-                android:max="2"
-                />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/grand_tichu"
-            android:layout_width="match_parent"
+        <SeekBar
+            android:id="@+id/tichu_seekbar"
+            android:layout_width="@dimen/tichus_seeker_width"
             android:layout_height="wrap_content"
-            >
+            android:layout_toRightOf="@id/tichus_spinner"
+            android:progressDrawable="@drawable/progressbar"
+            android:max="2"
+            />
 
-            <TextView
-                android:id="@+id/grand_tichu_label"
-                android:layout_width="@dimen/tichus_label_width"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:text="@string/grand_tichu_label"
-                />
-
-            <SeekBar
-                android:id="@+id/grand_tichu_seekbar"
-                android:layout_width="@dimen/tichus_seeker_width"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/grand_tichu_label"
-                android:progressDrawable="@drawable/progressbar"
-                android:max="2"
-                />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/imperial_tichu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-
-            <TextView
-                android:id="@+id/imperial_tichu_label"
-                android:layout_width="@dimen/tichus_label_width"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:text="@string/imperial_tichu_label"
-                />
-
-            <SeekBar
-                android:id="@+id/imperial_tichu_seekbar"
-                android:layout_width="@dimen/tichus_seeker_width"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/imperial_tichu_label"
-                android:progressDrawable="@drawable/progressbar"
-                android:max="2"
-                />
-
-        </RelativeLayout>
-
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

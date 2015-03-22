@@ -5,7 +5,14 @@
     <string name="hand_label">Hand </string>
     <string name="team_1_points_header">Team 1 Points:</string>
     <string name="team_2_points_header">Team 2 Points:</string>
-    <string name="one_two_bonus_label">One-Two bonus</string>
+    <string name="one_two_bonus_label">One-Two</string>
     <string name="finished_button_label">Finish Hand</string>
     <string name="reset_button_label">Reset</string>
+
+    <string name="tichus_fail_label">FAIL</string>
+    <string name="tichus_success_label">SUCCESS</string>
+
+    <string name="tichu_label">TICHU</string>
+    <string name="grand_tichu_label">GRAND TICHU</string>
+    <string name="imperial_tichu_label">IMPERIAL TICHU</string>
 </resources>

@@ -2,11 +2,8 @@
 <resources>
     <string-array name="tichu_array">
         <item>(Choose Tichu)</item>
-        <item>Tichu Success</item>
-        <item>Tichu Fail</item>
-        <item>Grand Tichu Success</item>
-        <item>Grand Tichu Fail</item>
-        <item>Imperial Tichu Success</item>
-        <item>Imperial Tichu Fail</item>
+        <item>Tichu </item>
+        <item>Grand Tichu </item>
+        <item>Imperial Tichu </item>
     </string-array>
 </resources>

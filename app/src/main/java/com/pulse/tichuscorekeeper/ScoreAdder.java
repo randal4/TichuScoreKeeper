@@ -38,17 +38,20 @@ public class ScoreAdder extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private PlayerCard player1Card;
+    private PlayerCard player2Card;
+    private PlayerCard player3Card;
+    private PlayerCard player4Card;
+
     private TextView handTitle;
 
     private TextView totalScoreTeam1;
     private CheckBox oneTwoBonusTeam1;
     private Spinner pointsSpinnerTeam1;
-    private Spinner tichuSpinnerTeam1;
 
     private TextView totalScoreTeam2;
     private CheckBox oneTwoBonusTeam2;
     private Spinner pointsSpinnerTeam2;
-    private Spinner tichuSpinnerTeam2;
 
     private Button endHandButton;
     private Button resetButton;
@@ -81,6 +84,16 @@ public class ScoreAdder extends Fragment {
 
         handTitle = (TextView) adder.findViewById(R.id.hand_title);
         handTitle.setText("1");
+
+        player1Card = (PlayerCard) adder.findViewById(R.id.player1_card);
+        player2Card = (PlayerCard) adder.findViewById(R.id.player2_card);
+        player3Card = (PlayerCard) adder.findViewById(R.id.player3_card);
+        player4Card = (PlayerCard) adder.findViewById(R.id.player4_card);
+
+        player1Card.setPlayerName("Player 1");
+        player2Card.setPlayerName("Player 2");
+        player3Card.setPlayerName("Player 3");
+        player4Card.setPlayerName("Player 4");
 
         totalScoreTeam1 = (TextView) adder.findViewById(R.id.total_score_team_1);
         totalScoreTeam1.setText("0");
@@ -164,13 +177,6 @@ public class ScoreAdder extends Fragment {
         //Start with spinner at 50 each
         pointsSpinnerTeam1.setSelection(15);
 
-        tichuSpinnerTeam1 = (Spinner) adder.findViewById(R.id.tichu_spinner_team_1);
-        tichuSpinnerTeam2 = (Spinner) adder.findViewById(R.id.tichu_spinner_team_2);
-        ArrayAdapter<CharSequence> tichuAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.tichu_array, android.R.layout.simple_spinner_item);
-        tichuAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        tichuSpinnerTeam1.setAdapter(tichuAdapter);
-        tichuSpinnerTeam2.setAdapter(tichuAdapter);
-
         endHandButton = (Button) adder.findViewById(R.id.end_hand_button);
         endHandButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,8 +222,8 @@ public class ScoreAdder extends Fragment {
             team2Score += Integer.parseInt((String) pointsSpinnerTeam2.getSelectedItem());
         }
 
-        team1Score += getTichuPoints(tichuSpinnerTeam1);
-        team2Score += getTichuPoints(tichuSpinnerTeam2);
+        //team1Score += getTichuPoints(tichuSpinnerTeam1);
+        //team2Score += getTichuPoints(tichuSpinnerTeam2);
 
         totalScoreTeam1.setText(team1Score.toString());
         totalScoreTeam2.setText(team2Score.toString());
@@ -253,22 +259,19 @@ public class ScoreAdder extends Fragment {
         totalScoreTeam1.setText("0");
         totalScoreTeam2.setText("0");
 
-        oneTwoBonusTeam1.setChecked(false);
-        oneTwoBonusTeam2.setChecked(false);
-
-        // Make the default 50-50
-        pointsSpinnerTeam1.setSelection(15);
-
-        tichuSpinnerTeam1.setSelection(0);
-        tichuSpinnerTeam2.setSelection(0);
+        clearSelections();
     }
 
     private void clearSelections(){
         oneTwoBonusTeam1.setChecked(false);
         oneTwoBonusTeam2.setChecked(false);
 
-        tichuSpinnerTeam1.setSelection(0);
-        tichuSpinnerTeam2.setSelection(0);
+        pointsSpinnerTeam1.setSelection(15);
+
+        player1Card.reset();
+        player2Card.reset();
+        player3Card.reset();
+        player4Card.reset();
     }
 
     @Override

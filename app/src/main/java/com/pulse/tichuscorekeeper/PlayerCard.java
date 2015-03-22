@@ -34,7 +34,6 @@ public class PlayerCard extends RelativeLayout {
         init(context);
     }
 
-
     public void init(Context context){
         View v = View.inflate(this.getContext(), R.layout.player_card, this);
 
@@ -62,8 +61,8 @@ public class PlayerCard extends RelativeLayout {
         playerName.setText(name);
     }
 
-    public Integer getTichuPoints() {
-        Integer points = null;
+    public int getTichuPoints() {
+        int points = 0;
         String tichu = (String) tichuSpinner.getSelectedItem();
         Integer seekbarPosition = tichuSeekbar.getProgress();
 

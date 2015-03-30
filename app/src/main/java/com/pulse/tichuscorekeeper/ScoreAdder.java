@@ -13,8 +13,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.pulse.tichuscorekeeper.manager.GameManager;
+import com.pulse.tichuscorekeeper.manager.HandManager;
+import com.pulse.tichuscorekeeper.model.Game;
+import com.pulse.tichuscorekeeper.model.Hand;
+import com.pulse.tichuscorekeeper.model.Player;
+import com.pulse.tichuscorekeeper.model.Team;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +36,6 @@ public class ScoreAdder extends Fragment {
 
     static final String STATE_TEAM_1_SCORE = "team1Score";
     static final String STATE_TEAM_2_SCORE = "team2Score";
-    static final String HAND_NUMBER = "handNumber";
 
     private static final int ONE_TWO_POINTS = 200;
 
@@ -41,15 +48,32 @@ public class ScoreAdder extends Fragment {
 
     private TextView totalScoreTeam1;
     private CheckBox oneTwoBonusTeam1;
-    private Spinner pointsSpinnerTeam1;
+    private SeekBar pointsSeekbarTeam1;
+    private TextView handPointsLabelTeam1;
 
     private TextView totalScoreTeam2;
     private CheckBox oneTwoBonusTeam2;
-    private Spinner pointsSpinnerTeam2;
+    private SeekBar pointsSeekbarTeam2;
+    private TextView handPointsLabelTeam2;
 
     private Button endHandButton;
     private Button resetButton;
 
+
+    private GameManager gm;
+    private HandManager hm;
+
+    private Player p1;
+    private Player p2;
+    private Player p3;
+    private Player p4;
+
+    private Team t1;
+    private Team t2;
+
+    private Game game;
+
+    private Hand hand;
 
     /**
      * Use this factory method to create a new instance of
@@ -93,17 +117,20 @@ public class ScoreAdder extends Fragment {
         totalScoreTeam2 = (TextView) adder.findViewById(R.id.total_score_team_2);
         totalScoreTeam2.setText("0");
 
+        handPointsLabelTeam1 = (TextView) adder.findViewById(R.id.round_points_text_team_1);
+        handPointsLabelTeam2 = (TextView) adder.findViewById(R.id.round_points_text_team_2);
+
         oneTwoBonusTeam1 = (CheckBox) adder.findViewById(R.id.one_two_team_1);
         oneTwoBonusTeam1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    pointsSpinnerTeam1.setEnabled(false);
-                    pointsSpinnerTeam2.setEnabled(false);
+                    pointsSeekbarTeam1.setEnabled(false);
+                    pointsSeekbarTeam2.setEnabled(false);
                     oneTwoBonusTeam2.setEnabled(false);
                 }else{
-                    pointsSpinnerTeam1.setEnabled(true);
-                    pointsSpinnerTeam2.setEnabled(true);
+                    pointsSeekbarTeam1.setEnabled(true);
+                    pointsSeekbarTeam2.setEnabled(true);
                     oneTwoBonusTeam2.setEnabled(true);
                 }
             }
@@ -113,61 +140,66 @@ public class ScoreAdder extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    pointsSpinnerTeam1.setEnabled(false);
-                    pointsSpinnerTeam2.setEnabled(false);
+                    pointsSeekbarTeam1.setEnabled(false);
+                    pointsSeekbarTeam2.setEnabled(false);
                     oneTwoBonusTeam1.setEnabled(false);
                 }else{
-                    pointsSpinnerTeam1.setEnabled(true);
-                    pointsSpinnerTeam2.setEnabled(true);
+                    pointsSeekbarTeam1.setEnabled(true);
+                    pointsSeekbarTeam2.setEnabled(true);
                     oneTwoBonusTeam1.setEnabled(true);
                 }
             }
         });
 
-        pointsSpinnerTeam1 = (Spinner) adder.findViewById(R.id.points_spinner_team_1);
+        pointsSeekbarTeam1 = (SeekBar) adder.findViewById(R.id.points_seekbar_team_1);
+        pointsSeekbarTeam2 = (SeekBar) adder.findViewById(R.id.points_seekbar_team_2);
 
-        pointsSpinnerTeam2 = (Spinner) adder.findViewById(R.id.points_spinner_team_2);
-        final ArrayAdapter<CharSequence> pointsAdapter = ArrayAdapter.createFromResource(this.getActivity(), R.array.points_array, android.R.layout.simple_spinner_item);
-        pointsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        pointsSpinnerTeam1.setAdapter(pointsAdapter);
-        pointsSpinnerTeam2.setAdapter(pointsAdapter);
+        pointsSeekbarTeam1.setMax(30);
+        pointsSeekbarTeam2.setMax(30);
 
-        pointsSpinnerTeam1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+        pointsSeekbarTeam1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int pointsVal;
+
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Integer team1CurrentPoints = Integer.parseInt(pointsSpinnerTeam1.getSelectedItem().toString());
-                Integer team2CurrentPoints = 100 - team1CurrentPoints;
-
-                Integer team2position = pointsAdapter.getPosition(team2CurrentPoints.toString());
-
-                pointsSpinnerTeam2.setSelection(team2position);
-                Log.i(this.getClass().getName(), "Changed team2 selection");
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                pointsVal = (progress * 5) - 25;
+                handPointsLabelTeam1.setText(pointsVal + "");
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //Do nothing
-            }
-        });
+            public void onStartTrackingTouch(SeekBar seekBar) {
 
-        pointsSpinnerTeam2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Integer team2CurrentPoints = Integer.parseInt(pointsSpinnerTeam2.getSelectedItem().toString());
-                Integer team1CurrentPoints = 100 - team2CurrentPoints;
-
-                pointsSpinnerTeam1.setSelection(pointsAdapter.getPosition(team1CurrentPoints.toString()));
-                Log.i(this.getClass().getName(), "Changed team1 selection");
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //Do Nothing
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                pointsSeekbarTeam2.setProgress(((100 - pointsVal) + 25 ) / 5);
             }
         });
 
-        //Start with spinner at 50 each
-        pointsSpinnerTeam1.setSelection(15);
+        pointsSeekbarTeam2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int pointsVal;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                pointsVal = (progress * 5) - 25;
+                handPointsLabelTeam2.setText(pointsVal + "");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                pointsSeekbarTeam1.setProgress(((100 - pointsVal) + 25 ) / 5);
+            }
+        });
+
+        pointsSeekbarTeam1.setProgress(15);
+        pointsSeekbarTeam2.setProgress(15);
 
         endHandButton = (Button) adder.findViewById(R.id.end_hand_button);
         endHandButton.setOnClickListener(new View.OnClickListener() {
@@ -197,7 +229,7 @@ public class ScoreAdder extends Fragment {
         }else if(oneTwoBonusTeam2.isChecked()) {
             //no points for you
         }else {
-            team1Score += Integer.parseInt((String) pointsSpinnerTeam1.getSelectedItem());
+            team1Score += Integer.parseInt((String) handPointsLabelTeam1.getText());
         }
 
         if(oneTwoBonusTeam2.isChecked()) {
@@ -205,7 +237,7 @@ public class ScoreAdder extends Fragment {
         }else if(oneTwoBonusTeam1.isChecked()) {
             //no points for you
         }else {
-            team2Score += Integer.parseInt((String) pointsSpinnerTeam2.getSelectedItem());
+            team2Score += Integer.parseInt((String) handPointsLabelTeam2.getText());
         }
 
         team1Score += player1Card.getTichuPoints();
@@ -233,7 +265,8 @@ public class ScoreAdder extends Fragment {
         oneTwoBonusTeam1.setChecked(false);
         oneTwoBonusTeam2.setChecked(false);
 
-        pointsSpinnerTeam1.setSelection(15);
+        pointsSeekbarTeam1.setProgress(15);
+        pointsSeekbarTeam2.setProgress(15);
 
         player1Card.reset();
         player2Card.reset();

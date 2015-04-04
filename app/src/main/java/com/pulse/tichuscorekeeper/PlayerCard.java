@@ -1,14 +1,28 @@
 package com.pulse.tichuscorekeeper;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.content.Context;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.activeandroid.query.Select;
+import com.pulse.tichuscorekeeper.model.Player;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 
 /**
  * Created by puLse on 3/21/15.
@@ -18,6 +32,7 @@ public class PlayerCard extends RelativeLayout {
     private static final int GRAND_TICHU_POINTS = 200;
     private static final int IMPERIAL_TICHU_POINTS = 400;
 
+    private Player player;
     private TextView playerName;
     private Button playerSelectButton;
     private Spinner tichuSpinner;
@@ -47,9 +62,86 @@ public class PlayerCard extends RelativeLayout {
             tichuSpinner.setAdapter(tichuAdapter);
         }
 
+        playerSelectButton = (Button) v.findViewById(R.id.player_settings_button);
+        playerSelectButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("PlayerSettingsButton", String.format("Player Setting Clicked"));
+                final AlertDialog.Builder adBuilder = new AlertDialog.Builder(getContext());
+
+                adBuilder.setTitle(R.string.pick_player_header);
+
+                final List<Player> playerList = new Select().from(Player.class).execute();
+
+                List<String> playerNamesList = new ArrayList<String>(playerList.size());
+
+                for(Player p : playerList){
+                    playerNamesList.add(p.name);
+                }
+
+                //Collections.sort(playerNamesList);
+
+                playerNamesList.add(0, "(Create New Player)");
+
+                adBuilder.setCancelable(true);
+                adBuilder.setItems(playerNamesList.toArray(new CharSequence[playerNamesList.size()]),new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("DialogOnClick", "Clicked");
+                        ListView lw = ((AlertDialog) dialog).getListView();
+                        String selected = (String) lw.getAdapter().getItem(which);
+                        Log.d("DialogOnClick", "Selected : " + selected);
+
+                        if(which == 0){
+                            showCreateNewPlayerDialog();
+                        }else{
+                           setPlayer(playerList.get(which-1));
+                           playerName.setText(selected);
+                        }
+                    }
+                });
+                adBuilder.show();
+            }
+        });
         tichuSeekbar = (SeekBar) v.findViewById(R.id.tichu_seekbar);
 
         reset();
+    }
+
+    private void showCreateNewPlayerDialog(){
+        LayoutInflater li = LayoutInflater.from(getContext());
+        View playerSelectView = li.inflate(R.layout.fragment_player_select_dialog, null);
+
+        AlertDialog.Builder psBuilder = new AlertDialog.Builder(getContext());
+
+        psBuilder.setView(playerSelectView);
+
+        final EditText newPlayerName = (EditText) playerSelectView.findViewById(R.id.edit_text_player_name);
+
+        psBuilder.setCancelable(false);
+
+        psBuilder.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Player newPlayer = new Player(newPlayerName.getText().toString());
+
+                        newPlayer.save();
+                        setPlayer(newPlayer);
+                        playerName.setText(newPlayerName.getText());
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog ad = psBuilder.create();
+        ad.show();
+
     }
 
     public void reset(){
@@ -59,6 +151,18 @@ public class PlayerCard extends RelativeLayout {
 
     public void setPlayerName(String name){
         playerName.setText(name);
+    }
+
+    public String getPlayerName(){
+        return playerName.getText().toString();
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public int getTichuPoints() {
@@ -85,5 +189,44 @@ public class PlayerCard extends RelativeLayout {
         }
 
         return points;
+    }
+
+    public Boolean isTichuCall(){
+        String tichu = (String) tichuSpinner.getSelectedItem();
+        Integer seekbarPosition = tichuSeekbar.getProgress();
+
+        if(tichu.equals("Tichu") && seekbarPosition == 0){
+            return false;
+        }else if(tichu.equals("Tichu") && seekbarPosition == 2){
+            return true;
+        }else{
+            return null;
+        }
+    }
+
+    public Boolean isGrandTichuCall(){
+        String tichu = (String) tichuSpinner.getSelectedItem();
+        Integer seekbarPosition = tichuSeekbar.getProgress();
+
+        if(tichu.equals("Grand Tichu") && seekbarPosition == 0){
+            return false;
+        }else if(tichu.equals("Grand Tichu") && seekbarPosition == 2){
+            return true;
+        }else{
+            return null;
+        }
+    }
+
+    public Boolean isImperialTichuCall(){
+        String tichu = (String) tichuSpinner.getSelectedItem();
+        Integer seekbarPosition = tichuSeekbar.getProgress();
+
+        if(tichu.equals("Imperial Tichu") && seekbarPosition == 0){
+            return false;
+        }else if(tichu.equals("Imperial Tichu") && seekbarPosition == 2){
+            return true;
+        }else{
+            return null;
+        }
     }
 }

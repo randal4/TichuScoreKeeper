@@ -4,25 +4,17 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.pulse.tichuscorekeeper.manager.GameManager;
-import com.pulse.tichuscorekeeper.manager.HandManager;
-import com.pulse.tichuscorekeeper.model.Game;
-import com.pulse.tichuscorekeeper.model.Hand;
-import com.pulse.tichuscorekeeper.model.Player;
-import com.pulse.tichuscorekeeper.model.Team;
+import com.pulse.tichuscorekeeper.model.TichuHand;
+import com.pulse.tichuscorekeeper.service.TichuHandIntentService;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,22 +50,6 @@ public class ScoreAdder extends Fragment {
 
     private Button endHandButton;
     private Button resetButton;
-
-
-    private GameManager gm;
-    private HandManager hm;
-
-    private Player p1;
-    private Player p2;
-    private Player p3;
-    private Player p4;
-
-    private Team t1;
-    private Team t2;
-
-    private Game game;
-
-    private Hand hand;
 
     /**
      * Use this factory method to create a new instance of
@@ -165,6 +141,7 @@ public class ScoreAdder extends Fragment {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 pointsVal = (progress * 5) - 25;
                 handPointsLabelTeam1.setText(pointsVal + "");
+                pointsSeekbarTeam2.setProgress(((100 - pointsVal) + 25 ) / 5);
             }
 
             @Override
@@ -174,7 +151,6 @@ public class ScoreAdder extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                pointsSeekbarTeam2.setProgress(((100 - pointsVal) + 25 ) / 5);
             }
         });
 
@@ -185,6 +161,7 @@ public class ScoreAdder extends Fragment {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 pointsVal = (progress * 5) - 25;
                 handPointsLabelTeam2.setText(pointsVal + "");
+                pointsSeekbarTeam1.setProgress(((100 - pointsVal) + 25 ) / 5);
             }
 
             @Override
@@ -194,7 +171,6 @@ public class ScoreAdder extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                pointsSeekbarTeam1.setProgress(((100 - pointsVal) + 25 ) / 5);
             }
         });
 
@@ -221,8 +197,8 @@ public class ScoreAdder extends Fragment {
     }
 
     public void onHandEndButtonPressed(){
-        Integer team1Score = Integer.parseInt(totalScoreTeam1.getText().toString());
-        Integer team2Score = Integer.parseInt(totalScoreTeam2.getText().toString());
+        int team1Score = 0;
+        int team2Score = 0;
 
         if(oneTwoBonusTeam1.isChecked()) {
             team1Score += ONE_TWO_POINTS;
@@ -245,12 +221,70 @@ public class ScoreAdder extends Fragment {
         team2Score += player3Card.getTichuPoints();
         team2Score += player4Card.getTichuPoints();
 
-        totalScoreTeam1.setText(team1Score.toString());
-        totalScoreTeam2.setText(team2Score.toString());
+        Integer currentScoreTeam1 = Integer.parseInt(totalScoreTeam1.getText().toString());
+        Integer currentScoreTeam2 = Integer.parseInt(totalScoreTeam2.getText().toString());
 
+        totalScoreTeam1.setText(String.valueOf(currentScoreTeam1 + team1Score));
+        totalScoreTeam2.setText(String.valueOf(currentScoreTeam2 + team2Score));
+
+        saveStats(team1Score, team2Score);
         clearSelections();
     }
 
+    private void saveStats(int team1Score, int team2Score) {
+
+        TichuHand th1 = new TichuHand();
+        th1.player = player1Card.getPlayer();
+        th1.partner = player2Card.getPlayer();
+        th1.tichu = player1Card.isTichuCall();
+        th1.grandTichu = player1Card.isGrandTichuCall();
+        th1.imperialTichu = player1Card.isImperialTichuCall();
+        th1.oneTwo = oneTwoBonusTeam1.isChecked();
+        th1.oneTwoAgainst = oneTwoBonusTeam2.isChecked();
+        th1.score = team1Score;
+
+        TichuHandIntentService.startActionSaveHand(getActivity(), th1);
+        //th1.save();
+
+        TichuHand th2 = new TichuHand();
+        th2.player = player2Card.getPlayer();
+        th2.partner = player1Card.getPlayer();
+        th2.tichu = player2Card.isTichuCall();
+        th2.grandTichu = player2Card.isGrandTichuCall();
+        th2.imperialTichu = player2Card.isImperialTichuCall();
+        th2.oneTwo = oneTwoBonusTeam1.isChecked();
+        th2.oneTwoAgainst = oneTwoBonusTeam2.isChecked();
+        th2.score = team1Score;
+
+        TichuHandIntentService.startActionSaveHand(getActivity(), th2);
+        //th2.save();
+
+        TichuHand th3 = new TichuHand();
+        th3.player = player3Card.getPlayer();
+        th3.partner = player4Card.getPlayer();
+        th3.tichu = player3Card.isTichuCall();
+        th3.grandTichu = player3Card.isGrandTichuCall();
+        th3.imperialTichu = player3Card.isImperialTichuCall();
+        th3.oneTwo = oneTwoBonusTeam2.isChecked();
+        th3.oneTwoAgainst = oneTwoBonusTeam1.isChecked();
+        th3.score = team2Score;
+
+        TichuHandIntentService.startActionSaveHand(getActivity(), th3);
+        //th3.save();
+
+        TichuHand th4 = new TichuHand();
+        th4.player = player4Card.getPlayer();
+        th4.partner = player3Card.getPlayer();
+        th4.tichu = player4Card.isTichuCall();
+        th4.grandTichu = player4Card.isGrandTichuCall();
+        th4.imperialTichu = player4Card.isImperialTichuCall();
+        th4.oneTwo = oneTwoBonusTeam2.isChecked();
+        th4.oneTwoAgainst = oneTwoBonusTeam1.isChecked();
+        th4.score = team2Score;
+
+        TichuHandIntentService.startActionSaveHand(getActivity(), th4);
+        //th4.save();
+    }
 
 
     public void onResetButtonPressed(){

@@ -15,4 +15,6 @@
     <string name="tichu_label">TICHU</string>
     <string name="grand_tichu_label">GRAND TICHU</string>
     <string name="imperial_tichu_label">IMPERIAL TICHU</string>
+
+    <string name="pick_player_header">Pick Your Player</string>
 </resources>

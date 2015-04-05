@@ -106,10 +106,14 @@ public class ScoreAdder extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
+                    handPointsLabelTeam1.setText("200");
+                    handPointsLabelTeam2.setText("0");
                     pointsSeekbarTeam1.setEnabled(false);
                     pointsSeekbarTeam2.setEnabled(false);
                     oneTwoBonusTeam2.setEnabled(false);
                 }else{
+                    handPointsLabelTeam1.setText(String.valueOf((pointsSeekbarTeam1.getProgress() * 5) - 25));
+                    handPointsLabelTeam2.setText(String.valueOf((pointsSeekbarTeam2.getProgress() * 5) - 25));
                     pointsSeekbarTeam1.setEnabled(true);
                     pointsSeekbarTeam2.setEnabled(true);
                     oneTwoBonusTeam2.setEnabled(true);
@@ -121,10 +125,14 @@ public class ScoreAdder extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
+                    handPointsLabelTeam1.setText("0");
+                    handPointsLabelTeam2.setText("200");
                     pointsSeekbarTeam1.setEnabled(false);
                     pointsSeekbarTeam2.setEnabled(false);
                     oneTwoBonusTeam1.setEnabled(false);
                 }else{
+                    handPointsLabelTeam1.setText(String.valueOf((pointsSeekbarTeam1.getProgress() * 5) - 25));
+                    handPointsLabelTeam2.setText(String.valueOf((pointsSeekbarTeam2.getProgress() * 5) - 25));
                     pointsSeekbarTeam1.setEnabled(true);
                     pointsSeekbarTeam2.setEnabled(true);
                     oneTwoBonusTeam1.setEnabled(true);

@@ -1,6 +1,8 @@
 package com.pulse.tichuscorekeeper;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,11 +12,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.pulse.tichuscorekeeper.model.TichuHand;
 import com.pulse.tichuscorekeeper.service.TichuHandIntentService;
+
+import java.util.zip.Inflater;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -244,7 +249,6 @@ public class ScoreAdder extends Fragment {
         th1.score = team1Score;
 
         TichuHandIntentService.startActionSaveHand(getActivity(), th1);
-        //th1.save();
 
         TichuHand th2 = new TichuHand();
         th2.player = player2Card.getPlayerName();
@@ -257,7 +261,6 @@ public class ScoreAdder extends Fragment {
         th2.score = team1Score;
 
         TichuHandIntentService.startActionSaveHand(getActivity(), th2);
-        //th2.save();
 
         TichuHand th3 = new TichuHand();
         th3.player = player3Card.getPlayerName();
@@ -270,7 +273,6 @@ public class ScoreAdder extends Fragment {
         th3.score = team2Score;
 
         TichuHandIntentService.startActionSaveHand(getActivity(), th3);
-        //th3.save();
 
         TichuHand th4 = new TichuHand();
         th4.player = player4Card.getPlayerName();
@@ -283,7 +285,6 @@ public class ScoreAdder extends Fragment {
         th4.score = team2Score;
 
         TichuHandIntentService.startActionSaveHand(getActivity(), th4);
-        //th4.save();
     }
 
 

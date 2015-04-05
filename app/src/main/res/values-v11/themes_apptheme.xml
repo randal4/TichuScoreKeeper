@@ -5,6 +5,12 @@
 
   <style name="AppTheme" parent="Theme.AppCompat">
 
+    <item name="android:listChoiceIndicatorMultiple">@drawable/apptheme_btn_check_holo_dark</item>
+
+    <item name="android:dropDownSpinnerStyle">@style/SpinnerAppTheme</item>
+
+    <item name="android:progressBarStyleHorizontal">@style/ProgressBarAppTheme</item>
+
     <item name="android:seekBarStyle">@style/SeekBarAppTheme</item>
 
   </style>

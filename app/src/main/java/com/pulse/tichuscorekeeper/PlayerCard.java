@@ -102,8 +102,6 @@ public class PlayerCard extends RelativeLayout {
     private void showPlayerSettingsDialog(){
         final AlertDialog.Builder adBuilder = new AlertDialog.Builder(getContext());
 
-        adBuilder.setTitle(R.string.pick_player_header);
-
         //final List<TichuHand> playerList = SQLiteUtils.rawQuery(TichuHand.class,"Select distinct(player) from hands", null);
 
         Cursor c = ActiveAndroid.getDatabase().rawQuery("Select distinct(player) from hands where player not in ('Player 1', 'Player 2', 'Player 3', 'Player 4')", null);
@@ -139,7 +137,7 @@ public class PlayerCard extends RelativeLayout {
 
     private void showCreateNewPlayerDialog(){
         LayoutInflater li = LayoutInflater.from(getContext());
-        View playerSelectView = li.inflate(R.layout.fragment_player_select_dialog, null);
+        View playerSelectView = li.inflate(R.layout.player_select_dialog, null);
 
         AlertDialog.Builder psBuilder = new AlertDialog.Builder(getContext());
 
@@ -153,7 +151,7 @@ public class PlayerCard extends RelativeLayout {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        playerName.setText(newPlayerName.getText());
+                        playerName.setText(newPlayerName.getText().toString());
                     }
                 })
                 .setNegativeButton("Cancel",

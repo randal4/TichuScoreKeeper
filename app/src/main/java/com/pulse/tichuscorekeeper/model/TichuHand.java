@@ -13,11 +13,11 @@ import com.activeandroid.annotation.Table;
 @Table(name="Hands")
 public class TichuHand extends Model implements Parcelable{
 
-    public TichuHand(){  }
+    public TichuHand(){ super(); }
 
     public TichuHand(Parcel in){
-        player = (Player) in.readParcelable(Player.class.getClassLoader());
-        partner = (Player) in.readParcelable(Player.class.getClassLoader());
+        player = in.readString();
+        partner = in.readString();
         score = in.readInt();
         oneTwo = (Boolean) in.readValue(null);
         oneTwoAgainst = (Boolean) in.readValue(null);
@@ -28,10 +28,10 @@ public class TichuHand extends Model implements Parcelable{
     }
 
     @Column
-    public Player player;
+    public String player;
 
     @Column
-    public Player partner;
+    public String partner;
 
     @Column
     public int score;
@@ -61,8 +61,8 @@ public class TichuHand extends Model implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(player, flags);
-        dest.writeParcelable(partner, flags);
+        dest.writeString(player);
+        dest.writeString(partner);
         dest.writeInt(score);
         dest.writeValue(oneTwo);
         dest.writeValue(oneTwoAgainst);

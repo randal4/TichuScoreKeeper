@@ -1,7 +1,9 @@
 package com.pulse.tichuscorekeeper;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,16 +13,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.content.Context;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.activeandroid.query.Select;
-import com.pulse.tichuscorekeeper.model.Player;
+import com.activeandroid.ActiveAndroid;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -31,10 +30,13 @@ public class PlayerCard extends RelativeLayout {
     private static final int TICHU_POINTS = 100;
     private static final int GRAND_TICHU_POINTS = 200;
     private static final int IMPERIAL_TICHU_POINTS = 400;
+    private static final int TICHU_SUCCESS_POSITION = 2;
+    private static final int TICHU_FAIL_POSITION = 0;
 
-    private Player player;
     private TextView playerName;
-    private Button playerSelectButton;
+    private Button thumbsUp;
+    private Button thumbsDown;
+    private TextView playerSelect;
     private Spinner tichuSpinner;
     private SeekBar tichuSeekbar;
 
@@ -53,7 +55,29 @@ public class PlayerCard extends RelativeLayout {
         View v = View.inflate(this.getContext(), R.layout.player_card, this);
 
         playerName = (TextView) v.findViewById(R.id.player_name);
-        playerSelectButton = (Button) v.findViewById(R.id.player_settings_button);
+        playerName.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPlayerSettingsDialog();
+            }
+        });
+
+
+        thumbsUp = (Button) v.findViewById(R.id.thumbs_up);
+        thumbsUp.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tichuSeekbar.setProgress(TICHU_SUCCESS_POSITION);
+            }
+        });
+
+        thumbsDown = (Button) v.findViewById(R.id.thumbs_down);
+        thumbsDown.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tichuSeekbar.setProgress(TICHU_FAIL_POSITION);
+            }
+        });
 
         tichuSpinner = (Spinner) v.findViewById(R.id.tichus_spinner);
         if(!isInEditMode()) {
@@ -62,50 +86,55 @@ public class PlayerCard extends RelativeLayout {
             tichuSpinner.setAdapter(tichuAdapter);
         }
 
-        playerSelectButton = (Button) v.findViewById(R.id.player_settings_button);
-        playerSelectButton.setOnClickListener(new OnClickListener() {
+        playerSelect = (TextView) v.findViewById(R.id.player_settings);
+        playerSelect.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("PlayerSettingsButton", String.format("Player Setting Clicked"));
-                final AlertDialog.Builder adBuilder = new AlertDialog.Builder(getContext());
-
-                adBuilder.setTitle(R.string.pick_player_header);
-
-                final List<Player> playerList = new Select().from(Player.class).execute();
-
-                List<String> playerNamesList = new ArrayList<String>(playerList.size());
-
-                for(Player p : playerList){
-                    playerNamesList.add(p.name);
-                }
-
-                //Collections.sort(playerNamesList);
-
-                playerNamesList.add(0, "(Create New Player)");
-
-                adBuilder.setCancelable(true);
-                adBuilder.setItems(playerNamesList.toArray(new CharSequence[playerNamesList.size()]),new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.d("DialogOnClick", "Clicked");
-                        ListView lw = ((AlertDialog) dialog).getListView();
-                        String selected = (String) lw.getAdapter().getItem(which);
-                        Log.d("DialogOnClick", "Selected : " + selected);
-
-                        if(which == 0){
-                            showCreateNewPlayerDialog();
-                        }else{
-                           setPlayer(playerList.get(which-1));
-                           playerName.setText(selected);
-                        }
-                    }
-                });
-                adBuilder.show();
+                Log.d("PlayerSettings", String.format("Player Setting Clicked"));
+                showPlayerSettingsDialog();
             }
         });
         tichuSeekbar = (SeekBar) v.findViewById(R.id.tichu_seekbar);
 
         reset();
+    }
+
+    private void showPlayerSettingsDialog(){
+        final AlertDialog.Builder adBuilder = new AlertDialog.Builder(getContext());
+
+        adBuilder.setTitle(R.string.pick_player_header);
+
+        //final List<TichuHand> playerList = SQLiteUtils.rawQuery(TichuHand.class,"Select distinct(player) from hands", null);
+
+        Cursor c = ActiveAndroid.getDatabase().rawQuery("Select distinct(player) from hands where player not in ('Player 1', 'Player 2', 'Player 3', 'Player 4')", null);
+
+        List<String> playerNamesList = new ArrayList<String>();
+
+        while(c.moveToNext()){
+            playerNamesList.add(c.getString(0));
+        }
+
+        //Collections.sort(playerNamesList);
+
+        playerNamesList.add(0, "(Create New Player)");
+
+        adBuilder.setCancelable(true);
+        adBuilder.setItems(playerNamesList.toArray(new CharSequence[playerNamesList.size()]),new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d("DialogOnClick", "Clicked");
+                ListView lw = ((AlertDialog) dialog).getListView();
+                String selected = (String) lw.getAdapter().getItem(which);
+                Log.d("DialogOnClick", "Selected : " + selected);
+
+                if(which == 0){
+                    showCreateNewPlayerDialog();
+                }else{
+                    playerName.setText(selected);
+                }
+            }
+        });
+        adBuilder.show();
     }
 
     private void showCreateNewPlayerDialog(){
@@ -124,10 +153,6 @@ public class PlayerCard extends RelativeLayout {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Player newPlayer = new Player(newPlayerName.getText().toString());
-
-                        newPlayer.save();
-                        setPlayer(newPlayer);
                         playerName.setText(newPlayerName.getText());
                     }
                 })
@@ -155,14 +180,6 @@ public class PlayerCard extends RelativeLayout {
 
     public String getPlayerName(){
         return playerName.getText().toString();
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
     }
 
     public int getTichuPoints() {

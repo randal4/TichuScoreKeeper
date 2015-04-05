@@ -22,23 +22,35 @@
             android:text="PLAYER TEXT"
             />
 
-        <Button
-            android:id="@+id/player_settings_button"
+        <TextView
+            android:id="@+id/player_settings"
             android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@id/player_name"
             android:layout_marginLeft="@dimen/default_margin"
-            android:background="@drawable/user"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/medium_text"
+            android:text="..."
             />
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/split_line"
+        android:layout_width="300dp"
+        android:layout_height="3dp"
+        android:background="@android:color/darker_gray"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/header"
+        />
 
     <RelativeLayout
         android:id="@+id/tichu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/header"
-        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_below="@id/split_line"
+        android:layout_margin="@dimen/default_margin"
+        android:padding="5dp"
         >
 
         <Spinner
@@ -48,10 +60,10 @@
             android:spinnerMode="dialog"
             />
 
-        <ImageView
+        <Button
             android:id="@+id/thumbs_down"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/thumbs_down"
             android:layout_toRightOf="@id/tichus_spinner"
             android:layout_marginLeft="@dimen/default_margin"
@@ -66,9 +78,10 @@
             android:max="2"
             />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <Button
+            android:id="@+id/thumbs_up"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/thumbs_up"
             android:layout_toRightOf="@id/tichu_seekbar"
             android:layout_marginRight="@dimen/default_margin"

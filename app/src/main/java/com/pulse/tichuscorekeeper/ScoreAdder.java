@@ -234,8 +234,8 @@ public class ScoreAdder extends Fragment {
     private void saveStats(int team1Score, int team2Score) {
 
         TichuHand th1 = new TichuHand();
-        th1.player = player1Card.getPlayer();
-        th1.partner = player2Card.getPlayer();
+        th1.player = player1Card.getPlayerName();
+        th1.partner = player2Card.getPlayerName();
         th1.tichu = player1Card.isTichuCall();
         th1.grandTichu = player1Card.isGrandTichuCall();
         th1.imperialTichu = player1Card.isImperialTichuCall();
@@ -247,8 +247,8 @@ public class ScoreAdder extends Fragment {
         //th1.save();
 
         TichuHand th2 = new TichuHand();
-        th2.player = player2Card.getPlayer();
-        th2.partner = player1Card.getPlayer();
+        th2.player = player2Card.getPlayerName();
+        th2.partner = player1Card.getPlayerName();
         th2.tichu = player2Card.isTichuCall();
         th2.grandTichu = player2Card.isGrandTichuCall();
         th2.imperialTichu = player2Card.isImperialTichuCall();
@@ -260,8 +260,8 @@ public class ScoreAdder extends Fragment {
         //th2.save();
 
         TichuHand th3 = new TichuHand();
-        th3.player = player3Card.getPlayer();
-        th3.partner = player4Card.getPlayer();
+        th3.player = player3Card.getPlayerName();
+        th3.partner = player4Card.getPlayerName();
         th3.tichu = player3Card.isTichuCall();
         th3.grandTichu = player3Card.isGrandTichuCall();
         th3.imperialTichu = player3Card.isImperialTichuCall();
@@ -273,8 +273,8 @@ public class ScoreAdder extends Fragment {
         //th3.save();
 
         TichuHand th4 = new TichuHand();
-        th4.player = player4Card.getPlayer();
-        th4.partner = player3Card.getPlayer();
+        th4.player = player4Card.getPlayerName();
+        th4.partner = player3Card.getPlayerName();
         th4.tichu = player4Card.isTichuCall();
         th4.grandTichu = player4Card.isGrandTichuCall();
         th4.imperialTichu = player4Card.isImperialTichuCall();

@@ -44,18 +44,19 @@
         android:layout_below="@id/header"
         />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/tichu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/split_line"
         android:layout_margin="@dimen/default_margin"
+        android:layout_centerHorizontal="true"
         android:padding="5dp"
         >
 
         <Spinner
             android:id="@+id/tichus_spinner"
-            android:layout_width="wrap_content"
+            android:layout_width="175dp"
             android:layout_height="wrap_content"
             android:spinnerMode="dialog"
             />
@@ -64,9 +65,8 @@
             android:id="@+id/thumbs_down"
             android:backgroundTint="@android:color/white"
             android:layout_width="30dp"
-            android:layout_height="36dp"
+            android:layout_height="40dp"
             android:background="@drawable/thumbs_down"
-            android:layout_toRightOf="@id/tichus_spinner"
             android:layout_marginLeft="@dimen/default_margin"
             />
 
@@ -74,7 +74,6 @@
             android:id="@+id/tichu_seekbar"
             android:layout_width="@dimen/tichus_seeker_width"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/thumbs_down"
             android:progressDrawable="@drawable/progressbar"
             android:max="2"
             />
@@ -83,12 +82,11 @@
             android:id="@+id/thumbs_up"
             android:backgroundTint="@android:color/white"
             android:layout_width="30dp"
-            android:layout_height="36dp"
+            android:layout_height="40dp"
             android:background="@drawable/thumbs_up"
-            android:layout_toRightOf="@id/tichu_seekbar"
             android:layout_marginRight="@dimen/default_margin"
             />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

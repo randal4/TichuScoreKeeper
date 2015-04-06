@@ -3,8 +3,8 @@
     <string name="action_settings">Settings</string>
 
     <string name="hand_label">Hand </string>
-    <string name="team_1_points_header">Team 1 Points:</string>
-    <string name="team_2_points_header">Team 2 Points:</string>
+    <string name="team_1_points_header">TEAM 1 :</string>
+    <string name="team_2_points_header">TEAM 2 :</string>
     <string name="one_two_bonus_label">One-Two</string>
     <string name="finished_button_label">Finish Hand</string>
     <string name="reset_button_label">Reset</string>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/default_margin"
+    android:layout_marginTop="@dimen/default_margin"
+    android:background="@drawable/rounded_corner"
+    >
+
+            <RelativeLayout
+                android:id="@+id/team_1_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/team_header"
+                >
+
+                <TextView
+                    android:id="@+id/team_1_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/small_text"
+                    android:layout_margin="@dimen/default_margin"
+                    android:text="@string/team_1_points_header"
+                    />
+
+                <TextView
+                    android:id="@+id/total_score_team_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:textSize="@dimen/large_text"
+                    android:text="0"
+                    />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/points_row_team_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/team_1_header"
+                android:layout_margin="@dimen/default_margin"
+                >
+
+                <CheckBox
+                    android:id="@+id/one_two_team_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:layout_gravity="center"
+                    android:text="@string/one_two_bonus_label"
+                    />
+
+                <SeekBar
+                    android:id="@+id/points_seekbar_team_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:layout_gravity="center"
+                    />
+
+                <TextView
+                    android:id="@+id/round_points_text_team_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/medium_text"
+                    />
+
+            </LinearLayout>
+
+            <com.pulse.tichuscorekeeper.PlayerCard
+                android:id="@+id/player1_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/points_row_team_1"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                />
+
+
+            <com.pulse.tichuscorekeeper.PlayerCard
+                android:id="@+id/player2_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/player1_card"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                />
+
+</RelativeLayout>

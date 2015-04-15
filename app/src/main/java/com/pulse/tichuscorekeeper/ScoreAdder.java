@@ -34,24 +34,10 @@ public class ScoreAdder extends Fragment {
     static final String STATE_TEAM_1_SCORE = "team1Score";
     static final String STATE_TEAM_2_SCORE = "team2Score";
 
-    private static final int ONE_TWO_POINTS = 200;
-
     private OnFragmentInteractionListener mListener;
 
-    private PlayerCard player1Card;
-    private PlayerCard player2Card;
-    private PlayerCard player3Card;
-    private PlayerCard player4Card;
-
-    private TextView totalScoreTeam1;
-    private CheckBox oneTwoBonusTeam1;
-    private SeekBar pointsSeekbarTeam1;
-    private TextView handPointsLabelTeam1;
-
-    private TextView totalScoreTeam2;
-    private CheckBox oneTwoBonusTeam2;
-    private SeekBar pointsSeekbarTeam2;
-    private TextView handPointsLabelTeam2;
+    private TeamCard team1Card;
+    private TeamCard team2Card;
 
     private Button endHandButton;
     private Button resetButton;
@@ -82,113 +68,17 @@ public class ScoreAdder extends Fragment {
 
         View adder = inflater.inflate(R.layout.fragment_score_adder, container, false);
 
-        player1Card = (PlayerCard) adder.findViewById(R.id.player1_card);
-        player2Card = (PlayerCard) adder.findViewById(R.id.player2_card);
-        player3Card = (PlayerCard) adder.findViewById(R.id.player3_card);
-        player4Card = (PlayerCard) adder.findViewById(R.id.player4_card);
+        team1Card = (TeamCard) adder.findViewById(R.id.team1_card);
+        team2Card = (TeamCard) adder.findViewById(R.id.team2_card);
 
-        player1Card.setPlayerName("Player 1");
-        player2Card.setPlayerName("Player 2");
-        player3Card.setPlayerName("Player 3");
-        player4Card.setPlayerName("Player 4");
+        team1Card.setOpposingTeam(team2Card);
+        team2Card.setOpposingTeam(team1Card);
 
-        totalScoreTeam1 = (TextView) adder.findViewById(R.id.total_score_team_1);
-        totalScoreTeam1.setText("0");
+        team1Card.setPlayer1Name("Player 1");
+        team1Card.setPlayer2Name("Player 2");
 
-        totalScoreTeam2 = (TextView) adder.findViewById(R.id.total_score_team_2);
-        totalScoreTeam2.setText("0");
-
-        handPointsLabelTeam1 = (TextView) adder.findViewById(R.id.round_points_text_team_1);
-        handPointsLabelTeam2 = (TextView) adder.findViewById(R.id.round_points_text_team_2);
-
-        oneTwoBonusTeam1 = (CheckBox) adder.findViewById(R.id.one_two_team_1);
-        oneTwoBonusTeam1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    handPointsLabelTeam1.setText("200");
-                    handPointsLabelTeam2.setText("0");
-                    pointsSeekbarTeam1.setEnabled(false);
-                    pointsSeekbarTeam2.setEnabled(false);
-                    oneTwoBonusTeam2.setEnabled(false);
-                }else{
-                    handPointsLabelTeam1.setText(String.valueOf((pointsSeekbarTeam1.getProgress() * 5) - 25));
-                    handPointsLabelTeam2.setText(String.valueOf((pointsSeekbarTeam2.getProgress() * 5) - 25));
-                    pointsSeekbarTeam1.setEnabled(true);
-                    pointsSeekbarTeam2.setEnabled(true);
-                    oneTwoBonusTeam2.setEnabled(true);
-                }
-            }
-        });
-        oneTwoBonusTeam2 = (CheckBox) adder.findViewById(R.id.one_two_team_2);
-        oneTwoBonusTeam2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    handPointsLabelTeam1.setText("0");
-                    handPointsLabelTeam2.setText("200");
-                    pointsSeekbarTeam1.setEnabled(false);
-                    pointsSeekbarTeam2.setEnabled(false);
-                    oneTwoBonusTeam1.setEnabled(false);
-                }else{
-                    handPointsLabelTeam1.setText(String.valueOf((pointsSeekbarTeam1.getProgress() * 5) - 25));
-                    handPointsLabelTeam2.setText(String.valueOf((pointsSeekbarTeam2.getProgress() * 5) - 25));
-                    pointsSeekbarTeam1.setEnabled(true);
-                    pointsSeekbarTeam2.setEnabled(true);
-                    oneTwoBonusTeam1.setEnabled(true);
-                }
-            }
-        });
-
-        pointsSeekbarTeam1 = (SeekBar) adder.findViewById(R.id.points_seekbar_team_1);
-        pointsSeekbarTeam2 = (SeekBar) adder.findViewById(R.id.points_seekbar_team_2);
-
-        pointsSeekbarTeam1.setMax(30);
-        pointsSeekbarTeam2.setMax(30);
-
-
-        pointsSeekbarTeam1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int pointsVal;
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                pointsVal = (progress * 5) - 25;
-                handPointsLabelTeam1.setText(pointsVal + "");
-                pointsSeekbarTeam2.setProgress(((100 - pointsVal) + 25 ) / 5);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-
-        pointsSeekbarTeam2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int pointsVal;
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                pointsVal = (progress * 5) - 25;
-                handPointsLabelTeam2.setText(pointsVal + "");
-                pointsSeekbarTeam1.setProgress(((100 - pointsVal) + 25 ) / 5);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-
-        pointsSeekbarTeam1.setProgress(15);
-        pointsSeekbarTeam2.setProgress(15);
+        team2Card.setPlayer1Name("Player 3");
+        team2Card.setPlayer2Name("Player 4");
 
         endHandButton = (Button) adder.findViewById(R.id.end_hand_button);
         endHandButton.setOnClickListener(new View.OnClickListener() {
@@ -210,42 +100,16 @@ public class ScoreAdder extends Fragment {
     }
 
     public void onHandEndButtonPressed(){
-        int team1Score = 0;
-        int team2Score = 0;
+        int team1HandPoints = team1Card.calculateHandPoints();
+        int team2HandPoints = team2Card.calculateHandPoints();
 
-        if(oneTwoBonusTeam1.isChecked()) {
-            team1Score += ONE_TWO_POINTS;
-        }else if(oneTwoBonusTeam2.isChecked()) {
-            //no points for you
-        }else {
-            team1Score += Integer.parseInt((String) handPointsLabelTeam1.getText());
-        }
-
-        if(oneTwoBonusTeam2.isChecked()) {
-            team2Score += ONE_TWO_POINTS;
-        }else if(oneTwoBonusTeam1.isChecked()) {
-            //no points for you
-        }else {
-            team2Score += Integer.parseInt((String) handPointsLabelTeam2.getText());
-        }
-
-        team1Score += player1Card.getTichuPoints();
-        team1Score += player2Card.getTichuPoints();
-        team2Score += player3Card.getTichuPoints();
-        team2Score += player4Card.getTichuPoints();
-
-        Integer currentScoreTeam1 = Integer.parseInt(totalScoreTeam1.getText().toString());
-        Integer currentScoreTeam2 = Integer.parseInt(totalScoreTeam2.getText().toString());
-
-        totalScoreTeam1.setText(String.valueOf(currentScoreTeam1 + team1Score));
-        totalScoreTeam2.setText(String.valueOf(currentScoreTeam2 + team2Score));
-
-        saveStats(team1Score, team2Score);
+        team1Card.computeStats(team1HandPoints, 0, 0);
+        team2Card.computeStats(team2HandPoints, 0, 0);
         clearSelections();
     }
 
     private void saveStats(int team1Score, int team2Score) {
-
+/*
         TichuHand th1 = new TichuHand();
         th1.player = player1Card.getPlayerName();
         th1.partner = player2Card.getPlayerName();
@@ -293,34 +157,25 @@ public class ScoreAdder extends Fragment {
         th4.score = team2Score;
 
         TichuHandIntentService.startActionSaveHand(getActivity(), th4);
+        */
     }
 
 
     public void onResetButtonPressed(){
         getActivity().setTitle(getActivity().getTitle());
-        totalScoreTeam1.setText("0");
-        totalScoreTeam2.setText("0");
-
-        clearSelections();
+        team1Card.reset();
+        team2Card.reset();
     }
 
     private void clearSelections(){
-        oneTwoBonusTeam1.setChecked(false);
-        oneTwoBonusTeam2.setChecked(false);
-
-        pointsSeekbarTeam1.setProgress(15);
-        pointsSeekbarTeam2.setProgress(15);
-
-        player1Card.reset();
-        player2Card.reset();
-        player3Card.reset();
-        player4Card.reset();
+        team1Card.clearSelections();
+        team2Card.clearSelections();
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putString(STATE_TEAM_1_SCORE, totalScoreTeam1.getText().toString());
-        savedInstanceState.putString(STATE_TEAM_2_SCORE, totalScoreTeam2.getText().toString());
+        savedInstanceState.putString(STATE_TEAM_1_SCORE, team1Card.getTotalScore());
+        savedInstanceState.putString(STATE_TEAM_2_SCORE, team2Card.getTotalScore());
 
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -330,8 +185,8 @@ public class ScoreAdder extends Fragment {
         super.onViewStateRestored(savedInstanceState);
 
         if(savedInstanceState != null) {
-            totalScoreTeam1.setText(savedInstanceState.getString(STATE_TEAM_1_SCORE));
-            totalScoreTeam2.setText(savedInstanceState.getString(STATE_TEAM_2_SCORE));
+            team1Card.setTotalScore(savedInstanceState.getString(STATE_TEAM_1_SCORE));
+            team2Card.setTotalScore(savedInstanceState.getString(STATE_TEAM_2_SCORE));
         }
     }
 

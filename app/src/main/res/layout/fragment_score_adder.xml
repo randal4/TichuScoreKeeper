@@ -36,88 +36,16 @@
                 android:layout_alignParentLeft="true"
                 />
 
-            <RelativeLayout
-                android:id="@+id/team1"
+            <com.pulse.tichuscorekeeper.TeamCard
+                android:id="@+id/team1_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/team_shim"
                 android:layout_toRightOf="@id/team1_label"
-                android:layout_marginRight="@dimen/default_margin"
                 android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
                 android:background="@drawable/rounded_corner"
-                >
-
-                <TextView
-                    android:id="@+id/total_score_team_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/default_margin"
-                    android:gravity="center"
-                    android:textSize="@dimen/large_text"
-                    android:text="0"
-                    android:background="@drawable/team_header"
-                    android:textColor="@android:color/darker_gray"
-                    />
-
-                <LinearLayout
-                    android:id="@+id/points_row_team_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/total_score_team_1"
-                    android:layout_margin="@dimen/default_margin"
-                    >
-
-                    <CheckBox
-                        android:id="@+id/one_two_team_1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:layout_gravity="center"
-                        android:text="@string/one_two_bonus_label"
-                        />
-
-                    <SeekBar
-                        android:id="@+id/points_seekbar_team_1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:layout_gravity="center"
-                        />
-
-                    <TextView
-                        android:id="@+id/round_points_text_team_1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:layout_gravity="center"
-                        android:textSize="@dimen/medium_text"
-                        />
-
-                </LinearLayout>
-
-                <com.pulse.tichuscorekeeper.PlayerCard
-                    android:id="@+id/player1_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/points_row_team_1"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
-                    />
-
-                <com.pulse.tichuscorekeeper.PlayerCard
-                    android:id="@+id/player2_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/player1_card"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
-                    />
-
-            </RelativeLayout>
+                />
 
         </RelativeLayout>
 
@@ -138,8 +66,8 @@
                 android:backgroundTint="#ff34a2d5"
                 />
 
-            <RelativeLayout
-                android:id="@+id/team2"
+            <com.pulse.tichuscorekeeper.TeamCard
+                android:id="@+id/team2_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/team_shim"
@@ -147,79 +75,8 @@
                 android:layout_marginTop="@dimen/default_margin"
                 android:layout_marginLeft="@dimen/default_margin"
                 android:background="@drawable/rounded_corner"
-                >
+                />
 
-                <TextView
-                    android:id="@+id/total_score_team_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/default_margin"
-                    android:gravity="center"
-                    android:textSize="@dimen/large_text"
-                    android:text="0"
-                    android:background="@drawable/team_header"
-                    android:textColor="@android:color/darker_gray"
-                    />
-
-                <LinearLayout
-                    android:id="@+id/points_row_team_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/total_score_team_2"
-                    android:layout_margin="@dimen/default_margin"
-                    >
-
-                    <CheckBox
-                        android:id="@+id/one_two_team_2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:layout_gravity="center"
-                        android:text="@string/one_two_bonus_label"
-                        />
-
-                    <SeekBar
-                        android:id="@+id/points_seekbar_team_2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:layout_gravity="center"
-                        />
-
-                    <TextView
-                        android:id="@+id/round_points_text_team_2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:layout_gravity="center"
-                        android:textSize="@dimen/medium_text"
-                        />
-
-                </LinearLayout>
-
-                <com.pulse.tichuscorekeeper.PlayerCard
-                    android:id="@+id/player3_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/points_row_team_2"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
-                    />
-
-                <com.pulse.tichuscorekeeper.PlayerCard
-                    android:id="@+id/player4_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/player3_card"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
-                    />
-
-            </RelativeLayout>
 
         </RelativeLayout>
 

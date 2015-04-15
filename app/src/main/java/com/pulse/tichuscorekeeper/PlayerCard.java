@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +32,7 @@ public class PlayerCard extends RelativeLayout {
     private static final int GRAND_TICHU_POINTS = 200;
     private static final int IMPERIAL_TICHU_POINTS = 400;
     private static final int TICHU_SUCCESS_POSITION = 2;
+    private static final int TICHU_NEUTRAL_POSITION = 1;
     private static final int TICHU_FAIL_POSITION = 0;
 
     private TextView playerName;
@@ -62,7 +64,6 @@ public class PlayerCard extends RelativeLayout {
             }
         });
 
-
         thumbsUp = (Button) v.findViewById(R.id.thumbs_up);
         thumbsUp.setOnClickListener(new OnClickListener() {
             @Override
@@ -86,6 +87,34 @@ public class PlayerCard extends RelativeLayout {
             tichuSpinner.setAdapter(tichuAdapter);
         }
 
+        tichuSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+               if(position == 0){
+                   tichuSeekbar.setProgress(TICHU_NEUTRAL_POSITION);
+                   tichuSeekbar.setVisibility(View.INVISIBLE);
+                   thumbsDown.setVisibility(View.INVISIBLE);
+                   thumbsUp.setVisibility(View.INVISIBLE);
+                   tichuSeekbar.setEnabled(false);
+                   thumbsDown.setEnabled(false);
+                   thumbsUp.setEnabled(false);
+               }else{
+                   tichuSeekbar.setProgress(TICHU_NEUTRAL_POSITION);
+                   tichuSeekbar.setVisibility(View.VISIBLE);
+                   thumbsDown.setVisibility(View.VISIBLE);
+                   thumbsUp.setVisibility(View.VISIBLE);
+                   tichuSeekbar.setEnabled(true);
+                   thumbsDown.setEnabled(true);
+                   thumbsUp.setEnabled(true);
+               }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         playerSelect = (TextView) v.findViewById(R.id.player_settings);
         playerSelect.setOnClickListener(new OnClickListener() {
             @Override
@@ -94,6 +123,7 @@ public class PlayerCard extends RelativeLayout {
                 showPlayerSettingsDialog();
             }
         });
+
         tichuSeekbar = (SeekBar) v.findViewById(R.id.tichu_seekbar);
 
         reset();

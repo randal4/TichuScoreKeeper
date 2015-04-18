@@ -5,6 +5,7 @@ import com.pulse.tichuscorekeeper.model.Game;
 import com.pulse.tichuscorekeeper.model.Hand;
 import com.pulse.tichuscorekeeper.model.Player;
 import com.pulse.tichuscorekeeper.model.Team;
+import com.pulse.tichuscorekeeper.model.TichuHand;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * Created by puLse on 3/22/15.
  */
 public class GameManager {
+
 /*    private HandManager handManager;
     private PlayerManager playerManager;
 

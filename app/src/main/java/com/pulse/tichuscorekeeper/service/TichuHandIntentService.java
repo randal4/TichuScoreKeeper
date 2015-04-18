@@ -4,8 +4,13 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.pulse.tichuscorekeeper.manager.HandManager;
 import com.pulse.tichuscorekeeper.model.TichuHand;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -31,9 +36,10 @@ public class TichuHandIntentService extends IntentService {
      */
     // TODO: Customize helper method
     public static void startActionSaveHand(Context context, TichuHand tichuHand) {
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         Intent intent = new Intent(context, TichuHandIntentService.class);
         intent.setAction(ACTION_SAVE_HAND);
-        intent.putExtra(TICHU_HAND, tichuHand);
+        intent.putExtra(TICHU_HAND, gson.toJson(tichuHand));
         context.startService(intent);
     }
 
@@ -43,10 +49,12 @@ public class TichuHandIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_SAVE_HAND.equals(action)) {
-                final TichuHand hand = intent.getParcelableExtra(TICHU_HAND);
+                String jsonTichuHand = intent.getStringExtra(TICHU_HAND);
+                final TichuHand hand = gson.fromJson(jsonTichuHand, TichuHand.class);
                 handleActionSaveHand(hand);
             }
         }

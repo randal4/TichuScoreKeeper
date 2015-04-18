@@ -1,25 +1,18 @@
 package com.pulse.tichuscorekeeper;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.pulse.tichuscorekeeper.model.TichuHand;
-import com.pulse.tichuscorekeeper.service.TichuHandIntentService;
-
-import java.util.zip.Inflater;
+import com.pulse.tichuscorekeeper.manager.GameManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,8 +32,16 @@ public class ScoreAdder extends Fragment {
     private TeamCard team1Card;
     private TeamCard team2Card;
 
+    private TextView handNumberLabel;
+
     private Button endHandButton;
     private Button resetButton;
+
+    private int hand = 1;
+    private int game;
+
+    private GameManager gameManager;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -80,6 +81,9 @@ public class ScoreAdder extends Fragment {
         team2Card.setPlayer1Name("Player 3");
         team2Card.setPlayer2Name("Player 4");
 
+        handNumberLabel = (TextView) adder.findViewById(R.id.hand_number);
+        handNumberLabel.setText(Integer.toString(hand));
+
         endHandButton = (Button) adder.findViewById(R.id.end_hand_button);
         endHandButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,71 +104,27 @@ public class ScoreAdder extends Fragment {
     }
 
     public void onHandEndButtonPressed(){
+        final Animation shrinkHandLabel = AnimationUtils.loadAnimation(getActivity(), R.anim.shrink);
         int team1HandPoints = team1Card.calculateHandPoints();
         int team2HandPoints = team2Card.calculateHandPoints();
 
-        team1Card.computeStats(team1HandPoints, 0, 0);
-        team2Card.computeStats(team2HandPoints, 0, 0);
+        team1Card.computeStats(team1HandPoints, hand, game);
+        team2Card.computeStats(team2HandPoints, hand, game);
+
+        hand++;
+        handNumberLabel.setText(Integer.toString(hand));
+        handNumberLabel.startAnimation(shrinkHandLabel);
+
         clearSelections();
     }
-
-    private void saveStats(int team1Score, int team2Score) {
-/*
-        TichuHand th1 = new TichuHand();
-        th1.player = player1Card.getPlayerName();
-        th1.partner = player2Card.getPlayerName();
-        th1.tichu = player1Card.isTichuCall();
-        th1.grandTichu = player1Card.isGrandTichuCall();
-        th1.imperialTichu = player1Card.isImperialTichuCall();
-        th1.oneTwo = oneTwoBonusTeam1.isChecked();
-        th1.oneTwoAgainst = oneTwoBonusTeam2.isChecked();
-        th1.score = team1Score;
-
-        TichuHandIntentService.startActionSaveHand(getActivity(), th1);
-
-        TichuHand th2 = new TichuHand();
-        th2.player = player2Card.getPlayerName();
-        th2.partner = player1Card.getPlayerName();
-        th2.tichu = player2Card.isTichuCall();
-        th2.grandTichu = player2Card.isGrandTichuCall();
-        th2.imperialTichu = player2Card.isImperialTichuCall();
-        th2.oneTwo = oneTwoBonusTeam1.isChecked();
-        th2.oneTwoAgainst = oneTwoBonusTeam2.isChecked();
-        th2.score = team1Score;
-
-        TichuHandIntentService.startActionSaveHand(getActivity(), th2);
-
-        TichuHand th3 = new TichuHand();
-        th3.player = player3Card.getPlayerName();
-        th3.partner = player4Card.getPlayerName();
-        th3.tichu = player3Card.isTichuCall();
-        th3.grandTichu = player3Card.isGrandTichuCall();
-        th3.imperialTichu = player3Card.isImperialTichuCall();
-        th3.oneTwo = oneTwoBonusTeam2.isChecked();
-        th3.oneTwoAgainst = oneTwoBonusTeam1.isChecked();
-        th3.score = team2Score;
-
-        TichuHandIntentService.startActionSaveHand(getActivity(), th3);
-
-        TichuHand th4 = new TichuHand();
-        th4.player = player4Card.getPlayerName();
-        th4.partner = player3Card.getPlayerName();
-        th4.tichu = player4Card.isTichuCall();
-        th4.grandTichu = player4Card.isGrandTichuCall();
-        th4.imperialTichu = player4Card.isImperialTichuCall();
-        th4.oneTwo = oneTwoBonusTeam2.isChecked();
-        th4.oneTwoAgainst = oneTwoBonusTeam1.isChecked();
-        th4.score = team2Score;
-
-        TichuHandIntentService.startActionSaveHand(getActivity(), th4);
-        */
-    }
-
 
     public void onResetButtonPressed(){
         getActivity().setTitle(getActivity().getTitle());
         team1Card.reset();
         team2Card.reset();
+        hand=1;
+        handNumberLabel.setText(Integer.toString(hand));
+        game++;
     }
 
     private void clearSelections(){
@@ -221,5 +181,6 @@ public class ScoreAdder extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
+
 
 }

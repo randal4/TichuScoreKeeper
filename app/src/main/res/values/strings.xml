@@ -8,7 +8,7 @@
     <string name="one_two_bonus_label">One-Two</string>
     <string name="finished_button_label">Finish Hand</string>
     <string name="new_game_button_label">New Game</string>
-    <string name="reset_button_label">Reset</string>
+    <string name="reset_button_label">Reset Hand</string>
     <string name="undo_last_hand_button_label">Undo Last Hand</string>
 
     <string name="tichus_fail_label">FAIL</string>

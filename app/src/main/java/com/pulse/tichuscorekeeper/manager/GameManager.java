@@ -1,5 +1,12 @@
 package com.pulse.tichuscorekeeper.manager;
 
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Cache;
+import com.activeandroid.query.Select;
+import com.activeandroid.util.SQLiteUtils;
 import com.pulse.tichuscorekeeper.exception.InvalidHandException;
 import com.pulse.tichuscorekeeper.model.Game;
 import com.pulse.tichuscorekeeper.model.Hand;
@@ -14,6 +21,21 @@ import java.util.List;
  */
 public class GameManager {
 
+    public int getMaxGame(){
+        int max = 0;
+        Cursor cursor = Cache.openDatabase().rawQuery("Select max(game) as maxGame from hands", null);
+        if(cursor.moveToFirst()) {
+            max = cursor.getInt(cursor.getColumnIndex("maxGame"));
+        }
+
+        return max;
+    }
+
+    public List<TichuHand> getTichuHandsForGame(int gameId){
+        List<TichuHand> hands = new Select().from(TichuHand.class).where("game = ?", gameId).execute();
+
+        return hands;
+    }
 /*    private HandManager handManager;
     private PlayerManager playerManager;
 

@@ -35,12 +35,13 @@ public class ScoreAdder extends Fragment {
     private TextView handNumberLabel;
 
     private Button endHandButton;
-    private Button resetButton;
+    private Button resetHandButton;
+    private Button newGameButton;
 
     private int hand = 1;
     private int game;
 
-    private GameManager gameManager;
+    private GameManager gameManager = new GameManager();
 
 
     /**
@@ -92,13 +93,28 @@ public class ScoreAdder extends Fragment {
             }
         });
 
-        resetButton = (Button) adder.findViewById(R.id.reset_button);
-        resetButton.setOnClickListener(new View.OnClickListener() {
+        resetHandButton = (Button) adder.findViewById(R.id.reset_button);
+        resetHandButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onResetButtonPressed();
+                clearSelections();
             }
         });
+
+        newGameButton = (Button) adder.findViewById(R.id.new_game_button);
+        newGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearSelections();
+                resetTeamScores();
+
+                game = gameManager.getMaxGame() + 1;
+                hand = 1;
+                handNumberLabel.setText(Integer.toString(hand));
+            }
+        });
+
+        game = gameManager.getMaxGame() + 1;
 
         return adder;
     }
@@ -118,13 +134,9 @@ public class ScoreAdder extends Fragment {
         clearSelections();
     }
 
-    public void onResetButtonPressed(){
-        getActivity().setTitle(getActivity().getTitle());
-        team1Card.reset();
-        team2Card.reset();
-        hand=1;
-        handNumberLabel.setText(Integer.toString(hand));
-        game++;
+    public void resetTeamScores(){
+        team1Card.resetScore();
+        team2Card.resetScore();
     }
 
     private void clearSelections(){

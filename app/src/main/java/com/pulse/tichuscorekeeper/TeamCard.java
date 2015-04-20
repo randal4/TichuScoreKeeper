@@ -153,10 +153,8 @@ public class TeamCard extends RelativeLayout {
         player2.reset();
     }
 
-    public void reset(){
+    public void resetScore(){
         totalScore.setText("0");
-
-        clearSelections();
     }
 
     public TeamCard getOpposingTeam() {
@@ -222,6 +220,9 @@ public class TeamCard extends RelativeLayout {
         th1.oneTwo = oneTwoBonus.isChecked();
         th1.oneTwoAgainst = opposingTeam.isOneTwoChecked();
         th1.score = handScore;
+        th1.game = game;
+        th1.hand = hand;
+
 
         TichuHandIntentService.startActionSaveHand(getContext(), th1);
 
@@ -234,6 +235,8 @@ public class TeamCard extends RelativeLayout {
         th2.oneTwo = oneTwoBonus.isChecked();
         th2.oneTwoAgainst = opposingTeam.isOneTwoChecked();
         th2.score = handScore;
+        th2.game = game;
+        th2.hand = hand;
 
         TichuHandIntentService.startActionSaveHand(getContext(), th2);
     }
